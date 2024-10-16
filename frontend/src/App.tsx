@@ -1,15 +1,6 @@
 import logo from './assets/logo.svg';
 import './App.css';
-import { useEffect, useMemo, useState } from 'react';
-
-
-
-function useCustomHook() {
-
-  const [getter, setter] = useState(1)
-
-  return getter * 2
-}
+import { useState } from 'react';
 
 function App() {
   const [value, setValue] = useState(0)
@@ -19,17 +10,6 @@ function App() {
     setValue(function setterFn(p) { return p + 1 })
   }
 
-
-  useEffect(() => {
-
-    // do something
-
-  }, [deendencies])
-
-  const data = useMemo(() => {
-
-    return // complex calculations
-  }, [dependencies])
 
 
   return (
