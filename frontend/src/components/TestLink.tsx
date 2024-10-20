@@ -14,11 +14,6 @@ interface Props {
 }
 
 
-function OtherComponent({ title }: { title: string }) {
-
-  return <div >{title}</div>
-}
-
 const TestLink = ({ page, children }: Props) => {
   const [status, setStatus] = useState(STATUS.NORMAL);
 
@@ -36,9 +31,7 @@ const TestLink = ({ page, children }: Props) => {
       href={page || "#"}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-    >
-      <OtherComponent title="my title" />
-      {children}
+    >    {children}
     </a>
   );
 };
