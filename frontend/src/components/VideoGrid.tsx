@@ -17,7 +17,7 @@ const VideoGrid = () => {
   return (
     <ul className="row g-4">
       {someData?.map((entity) => (
-        <li>{entity}</li>
+        <li key={entity}>{entity}</li>
       ))}
     </ul>
   );
