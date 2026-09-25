@@ -26,7 +26,7 @@ function ContentApp() {
     case 'success':
       return (
         <>
-          <strong>Videos available:</strong>
+          <strong>Videos availables:</strong>
           <ul>
             {value.map((item) => (
               <li>{item}</li>
