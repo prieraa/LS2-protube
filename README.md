@@ -226,30 +226,40 @@ Before starting coding you have to be sure you have the following software alrea
     * On Windows: Download the Python [installer](https://www.python.org/downloads/windows/) from the official Python
       website. Run the installer and ensure that you check the option to add Python to your system’s PATH during the
       installation process.
+* Other deps
+
+    You'll need unzip (in case of wsl), deno and ffmpeg 
+    * On Linux / Windows with WSL
+    Install them using your package manager. For example, on Ubuntu:
+      ```commandline
+        sudo apt-get update
+        sudo apt-get install ffmpeg unzip
+        curl -fsSL https://deno.land/install.sh | sh
+      ```
+    * Windows: Download the ffmpeg [executable](https://ffmpeg.org/download.html) from FFmpeg’s official website.
+      Extract the files and add the bin
+      directory to your system’s PATH.
+      Deno, using Powershell: 
+      ```commandline
+      irm https://deno.land/install.ps1 | iex
+      ```
+    * On macOS: Use Homebrew to install them:
+      ```commandline
+      brew install ffmpeg
+      curl -fsSL https://deno.land/install.sh | sh
+      ```
 
 * yt-dlp
     * On Linux / Windows with WSL
-        * ```commandline
+      ```commandline
       sudo wget https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -O /usr/local/bin/yt-dlp
       // And after:
       sudo chmod a+rx /usr/local/bin/yt-dlp
+
       ```
-        * On macOS
-          ```commandline
+    * On macOS
+      ```commandline
           brew install yt-dlp
-          ```
-* ffmpeg
-    * On Windows: Download the ffmpeg [executable](https://ffmpeg.org/download.html) from FFmpeg’s official website.
-      Extract the files and add the bin
-      directory to your system’s PATH.
-    * On macOS: Use Homebrew to install ffmpeg:
-      ```commandline
-      brew install ffmpeg
-      ```
-    * On Linux: Install ffmpeg using your package manager. For example, on Ubuntu:
-      ```commandline
-        sudo apt-get update
-        sudo apt-get install ffmpeg
       ```
 
 Remember to remove these packages if you don't want to keep them after the project; you can execute the following
