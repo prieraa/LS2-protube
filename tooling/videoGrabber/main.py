@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import os
+import shutil
 import subprocess
 import json
 import random
@@ -198,7 +199,12 @@ if __name__ == "__main__":
             sys.exit(0)
 
         # So you have chosen... death
-        [os.remove(f"{STORE_DIR}/{f}") for f in os.listdir(STORE_DIR)]
+        for f in os.listdir(STORE_DIR):
+            path = f"{STORE_DIR}/{f}"
+            if os.path.isdir(path) and not os.path.islink(path):
+                shutil.rmtree(path)
+            else:
+                os.remove(path)
 
     random.seed(id)
     grab_videos()

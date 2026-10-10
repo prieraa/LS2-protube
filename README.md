@@ -330,3 +330,32 @@ The command will generate 3 files for every video listed in `resources/video_lis
 * *.webp: The thumbnail
 * *.json: Metadata info about the video
 
+#### Docker
+
+If you don't want to install Python, `yt-dlp` and `ffmpeg` locally, you can run the video grabber in Docker. The
+image (`tooling/videoGrabber/Dockerfile`) bundles all of its dependencies. From the repository root:
+
+```commandline
+# Writes to ENV_PROTUBE_STORE_DIR if set (the same folder the backend uses), otherwise to ./store
+docker compose build videograbber
+docker compose run --rm videograbber
+```
+
+The service mounts `ENV_PROTUBE_STORE_DIR` (default: the gitignored `store/` folder) at `/store` and `resources/` at `/videos`. It uses
+`ENV_PROTUBE_GROUP_ID` as `--id` (default `10`). It always runs with `--recreate`, so **the store folder is
+wiped first**. To pass other arguments, add them after the service name. For example:
+
+```commandline
+docker compose run --rm videograbber --store=/store --id=3 --recreate --videos=/videos/video_list.txt
+```
+
+To use plain Docker without Compose:
+
+```commandline
+docker build -t protube-videograbber tooling/videoGrabber
+docker run --rm -v "<store folder>:/store" -v "<repo>/resources:/videos:ro" protube-videograbber
+```
+
+Rebuild the image (`docker compose build --no-cache videograbber`) when downloads start failing. Rebuilding picks up
+the latest `yt-dlp` release. On Linux, the generated files are owned by root unless you add `--user "$(id -u):$(id -g)"`.
+

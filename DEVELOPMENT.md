@@ -20,6 +20,10 @@ If installing the toolchain below gives you trouble, you only need [Docker Deskt
 (plus VS Code with the *Dev Containers* extension for option B). By default both options use the gitignored `store/`
 folder at the repo root as the video store. Set `ENV_PROTUBE_STORE_DIR` on the host to use a different folder.
 
+```bash
+docker compose run --rm videograbber   # once: fills store/ with sample videos
+```
+
 **A. Run only the backend in Docker** (you keep editing in your IDE):
 
 ```bash

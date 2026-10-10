@@ -39,6 +39,26 @@ services:
         target: /store
         read_only: true
 
+  # One-shot tool, not started by `docker compose up` (profile "tools").
+  # Run with: docker compose run --rm videograbber
+  videograbber:
+    build: ./tooling/videoGrabber
+    image: protube-videograbber
+    profiles: ["tools"]
+    command:
+      - --store=/store
+      - --id=${ENV_PROTUBE_GROUP_ID:-10}
+      - --recreate
+      - --videos=/videos/video_list.txt
+    volumes:
+      - type: bind
+        source: ${ENV_PROTUBE_STORE_DIR:-./store}
+        target: /store
+      - type: bind
+        source: ./resources
+        target: /videos
+        read_only: true
+
 volumes:
   postgres_data:
   backend_target:

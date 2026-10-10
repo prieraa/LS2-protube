@@ -48,6 +48,9 @@ The repo is a monorepo with two independently built apps plus a Python tool:
 * Run: `python3 main.py --store={Store_Folder} --id=10 --recreate --videos={Path to video_list.txt}` — writes
   `*.mp4`/`*.webp`/`*.json` triples per video into the store folder, which the backend reads via
   `ENV_PROTUBE_STORE_DIR`.
+* Docker alternative (no local deps): `docker compose run --rm videograbber` from the repo root (service in
+  `compose.yaml` under the `tools` profile, image from `tooling/videoGrabber/Dockerfile`). It mounts
+  `ENV_PROTUBE_STORE_DIR` (default `./store`) at `/store` and wipes it (`--recreate`).
 
 ### CI
 
