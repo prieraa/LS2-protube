@@ -1,0 +1,10 @@
+# Normalize line endings so scripts work no matter the OS of whoever commits/clones.
+* text=auto
+
+# Shell scripts must keep LF, or macOS/Linux/Docker fail with "/bin/sh^M: bad interpreter".
+*.sh  text eol=lf
+mvnw  text eol=lf
+
+# Windows scripts keep CRLF.
+*.cmd text eol=crlf
+*.bat text eol=crlf

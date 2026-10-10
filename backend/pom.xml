@@ -208,6 +208,35 @@
     </profiles>
     <build>
         <plugins>
+            <!-- Fail fast with a readable message when the wrong JDK/Maven is used, instead of
+                 cryptic compiler, Lombok, Mockito or JaCoCo errors further down the build. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-build-environment</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>[21,22)</version>
+                                    <message>
+ProTube needs JDK 21 (Amazon Corretto 21 recommended) but Maven is running on Java ${java.runtime.version} (${java.home}).
+Install Corretto 21 and point JAVA_HOME at it (IntelliJ: Settings > Build Tools > Maven > Runner > JRE = corretto-21).
+                                    </message>
+                                </requireJavaVersion>
+                                <requireMavenVersion>
+                                    <version>[3.9,)</version>
+                                    <message>Use the bundled wrapper: ./mvnw (macOS/Linux) or mvnw.cmd (Windows).</message>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>

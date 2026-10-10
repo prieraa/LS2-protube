@@ -14,12 +14,37 @@ the MVP spec see [REQUIREMENT.md](./REQUIREMENT.md).
 | `.run/`                  | Shared IntelliJ IDEA run configurations                                    |
 | `prompts/`               | Approved AI prompts (see the "Usage of AI" section of the README)          |
 
-## Prerequisites
+## Quick start with Docker only (recommended)
 
-* **Java 21** (JDK; CI uses Amazon Corretto 21).
-* **Maven 3.9+**. The Maven wrapper (`mvnw`) is **not** committed; either use your local `mvn`, or generate the
-  wrapper once inside `backend/` with `mvn -N wrapper:wrapper` (CI does the equivalent). The commands below use
-  `mvn`; swap in `./mvnw` if you generated it.
+If installing the toolchain below gives you trouble, you only need [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+(plus VS Code with the *Dev Containers* extension for option B). By default both options use the gitignored `store/`
+folder at the repo root as the video store. Set `ENV_PROTUBE_STORE_DIR` on the host to use a different folder.
+
+**A. Run only the backend in Docker** (you keep editing in your IDE):
+
+```bash
+docker compose up backend         # http://localhost:8080 (dev profile, H2); first run downloads dependencies
+docker compose restart backend    # after changing Java code
+```
+
+The frontend still runs on the host (`cd frontend && npm install && npm run dev`).
+
+**B. Develop inside a dev container** (Corretto 21 + Node 22 preinstalled): open the repo in VS Code and run
+*Dev Containers: Reopen in Container* (IntelliJ: open `.devcontainer/devcontainer.json` and use the gutter icon; also works
+in GitHub Codespaces). Then, in the container terminal:
+
+```bash
+cd backend && ./mvnw spring-boot:run   # http://localhost:8080
+cd frontend && npm run dev             # http://localhost:5173
+```
+
+## Prerequisites (running without Docker)
+
+* **Java 21** exactly (Amazon Corretto 21 recommended; CI uses it). Newer JDKs (23, 25…) are rejected by the build
+  with an explanatory message. `JAVA_HOME` (or IntelliJ's Maven runner JRE) must point to it.
+* **No Maven install needed**: use the committed wrapper inside `backend/` — `./mvnw` on macOS/Linux/Git Bash,
+  `mvnw.cmd` on Windows cmd/PowerShell. It downloads Maven 3.9.12 on first run. The commands below say `mvn`; swap
+  in the wrapper.
 * **Node.js 22** and npm (CI uses Node 22; the production Maven build downloads Node v22.12.0 on its own).
 * **Python 3, `yt-dlp` and `ffmpeg`** — only if you need to generate the sample videos.
 

@@ -39,10 +39,6 @@ jobs:
           distribution: 'corretto'
           java-version: '21'
 
-      - name: Install Maven Wrapper
-        working-directory: backend
-        run: mvn -N io.takari:maven:wrapper
-
       - name: Build and test backend with coverage
         working-directory: backend
         run: |

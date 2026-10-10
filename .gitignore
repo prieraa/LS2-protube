@@ -1,2 +1,4 @@
 .vscode/
 .idea/
+# Default local video store (ENV_PROTUBE_STORE_DIR fallback for compose and the devcontainer)
+/store/

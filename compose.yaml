@@ -1,18 +1,45 @@
-version: "3.9"
-
 services:
   db:
     image: postgres:16
     container_name: postgres_db
     restart: always
     environment:
-      POSTGRES_USER: ${ENV_PROTUBE_DB_USER}
-      POSTGRES_PASSWORD: ${ENV_PROTUBE_DB_PASS}
-      POSTGRES_DB: ${ENV_PROTUBE_DB}
+      POSTGRES_USER: ${ENV_PROTUBE_DB_USER:-protube}
+      POSTGRES_PASSWORD: ${ENV_PROTUBE_DB_PASS:-protube}
+      POSTGRES_DB: ${ENV_PROTUBE_DB:-protube}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  # Backend in dev mode with zero local setup (no JDK/Maven on the host): Corretto 21 + Maven 3.9 come from the image.
+  # Run with: docker compose up backend   → http://localhost:8080 (dev profile, in-memory H2)
+  # After changing Java code: docker compose restart backend
+  backend:
+    image: maven:3.9-amazoncorretto-21
+    working_dir: /app
+    # `mvn` from the image instead of ./mvnw: immune to a CRLF-mangled mvnw on Windows checkouts.
+    command: ["mvn", "-B", "spring-boot:run"]
+    environment:
+      ENV_PROTUBE_STORE_DIR: /store/
+      ENV_PROTUBE_GOOGLE_CLIENT_ID: ${ENV_PROTUBE_GOOGLE_CLIENT_ID:-}
+      ENV_PROTUBE_GOOGLE_CLIENT_SECRET: ${ENV_PROTUBE_GOOGLE_CLIENT_SECRET:-}
+    ports:
+      - "8080:8080"
+    volumes:
+      - type: bind
+        source: ./backend
+        target: /app
+      # Keep the container's build output apart from the host IDE's backend/target.
+      - backend_target:/app/target
+      # Cache downloaded dependencies between runs.
+      - maven_repo:/root/.m2
+      - type: bind
+        source: ${ENV_PROTUBE_STORE_DIR:-./store}
+        target: /store
+        read_only: true
+
 volumes:
   postgres_data:
+  backend_target:
+  maven_repo:

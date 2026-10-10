@@ -1,0 +1,44 @@
+// Ready-made dev environment: Amazon Corretto 21 + Node 22, nothing else needed on the laptop but Docker.
+// VS Code: "Dev Containers: Reopen in Container". IntelliJ: open this file and click the container icon.
+// Also works in GitHub Codespaces.
+{
+  "name": "ProTube",
+  "image": "mcr.microsoft.com/devcontainers/base:bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21",
+      "jdkDistro": "amzn",
+      // The committed ./mvnw provides Maven.
+      "installMaven": "false"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    }
+  },
+  "containerEnv": {
+    // Default video store inside the repo (gitignored). Fill it from the host with: docker compose run --rm videograbber
+    "ENV_PROTUBE_STORE_DIR": "${containerWorkspaceFolder}/store/"
+  },
+  "mounts": [
+    // Linux node_modules must not overwrite the host's (native binaries differ between OSes).
+    "source=protube-node_modules,target=${containerWorkspaceFolder}/frontend/node_modules,type=volume",
+    // Cache Maven dependencies across container rebuilds.
+    "source=protube-m2,target=/home/vscode/.m2,type=volume"
+  ],
+  "postCreateCommand": "sudo chown -R vscode:vscode frontend/node_modules /home/vscode/.m2 && mkdir -p store && (cd frontend && npm ci) && (cd backend && sh ./mvnw -B -q dependency:go-offline)",
+  "forwardPorts": [8080, 5173],
+  "portsAttributes": {
+    "8080": { "label": "Backend (Spring Boot)" },
+    "5173": { "label": "Frontend (Vite)" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vmware.vscode-boot-dev-pack",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}
