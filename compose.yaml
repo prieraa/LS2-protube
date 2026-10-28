@@ -21,7 +21,7 @@ services:
     # `mvn` from the image instead of ./mvnw: immune to a CRLF-mangled mvnw on Windows checkouts.
     command: ["mvn", "-B", "spring-boot:run"]
     environment:
-      ENV_PROTUBE_STORE_DIR: /store/
+      ENV_PROTUBE_STORE_DIR: ${ENV_PROTUBE_STORE_DIR}
       ENV_PROTUBE_GOOGLE_CLIENT_ID: ${ENV_PROTUBE_GOOGLE_CLIENT_ID:-}
       ENV_PROTUBE_GOOGLE_CLIENT_SECRET: ${ENV_PROTUBE_GOOGLE_CLIENT_SECRET:-}
     ports:
