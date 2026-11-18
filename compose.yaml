@@ -20,7 +20,7 @@ services:
     image: maven:3.9-amazoncorretto-21
     working_dir: /app/backend
     # `mvn` from the image instead of ./mvnw: immune to a CRLF-mangled mvnw on Windows checkouts.
-    command: ["spring-boot:run", "-f", "pom.xml"]
+    command: ["mvn", "spring-boot:run", "-f", "pom.xml", "-Pprod"]
     depends_on:
       - db
     environment:
